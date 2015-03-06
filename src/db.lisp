@@ -30,10 +30,12 @@ SELECT EXISTS(
 (defun db-upgrade (source dest)
   (loop
      :for i from (1+ source) upto dest
-     :do (db-run (merge-pathnames
-                  (concatenate 'string (write-to-string i) ".sql")
-                  (merge-pathnames "sql/upgrades/"
-                                   (asdf:system-source-directory :groceries))))))
+     :do (progn
+           (format t "Running upgrade ~D...~%" i)
+           (db-run (merge-pathnames
+                    (concatenate 'string (write-to-string i) ".sql")
+                    (merge-pathnames "sql/upgrades/"
+                                     (asdf:system-source-directory :groceries)))))))
 
 (defun db-initialize ()
   ;; schema is the only multi-queries file
