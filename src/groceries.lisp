@@ -33,9 +33,11 @@
 (block db-init
   (let ((db-version (db-version)))
     (when (= db-version 0)
-      (db-initialize))
+      (return-from db-init (db-initialize)))
+    (when (= *version* db-version)
+      (return-from db-init (format t "Database version up-to-date.~%")))
     (when (> *version* db-version)
-      (db-upgrade db-version *version*))
+      (return-from db-init (db-upgrade db-version *version*)))
     (when (< *version* db-version)
       (format t "Database version more recent than code version. Terminating.~%")
       (unless *debug*

@@ -6,16 +6,16 @@ CREATE TABLE db_version (
 
 INSERT INTO db_version (version) VALUES (1);
 
-CREATE TABLE user (
+CREATE TABLE users (
        id SERIAL PRIMARY KEY,
        name VARCHAR(30) UNIQUE NOT NULL
 );
 
-INSERT INTO user (name) VALUES ('admin');
+INSERT INTO users (name) VALUES ('admin');
 
 CREATE TABLE list (
        id SERIAL PRIMARY KEY,
-       user_id INTEGER REFERENCES user(id)
+       user_id INTEGER REFERENCES users(id)
 );
 
 CREATE TABLE item (
