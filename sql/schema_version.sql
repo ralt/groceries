@@ -1,0 +1,5 @@
+CREATE OR REPLACE FUNCTION schema_version() RETURNS INT AS $$
+BEGIN
+        SELECT version FROM db_version;
+END; $$
+LANGUAGE PLPGSQL;
