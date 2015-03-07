@@ -6,7 +6,7 @@ DECLARE
 BEGIN
         SELECT id INTO v_item_id
         FROM item
-        WHERE name = item_name;
+        WHERE name = LOWER(item_name);
 
         IF v_item_id IS NULL THEN
                 INSERT INTO item (name)
