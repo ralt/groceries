@@ -48,7 +48,10 @@ SELECT EXISTS(
                      (merge-pathnames
                       (concatenate 'string name ".sql")
                       (merge-pathnames "sql/" (asdf:system-source-directory :groceries))))
-                 '("schema_version")))
+                 '("schema_version"
+                   "items"
+                   "add_item"
+                   "list_items")))
     (db-run file)))
 
 (defun db-run (file &key (multiqueries nil))
