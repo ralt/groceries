@@ -35,7 +35,8 @@ SELECT EXISTS(
            (db-run (merge-pathnames
                     (concatenate 'string (write-to-string i) ".sql")
                     (merge-pathnames "sql/upgrades/"
-                                     (asdf:system-source-directory :groceries)))))))
+                                     (asdf:system-source-directory :groceries)))
+                   :multiqueries t))))
 
 (defun db-initialize ()
   ;; schema is the only multi-queries file
@@ -58,6 +59,6 @@ SELECT EXISTS(
   (with-db
     (if multiqueries
         (loop
-           :for query in (cl-ppcre:split ";" (a:read-file-into-string file))
+           :for query in (cl-ppcre:split "-----" (a:read-file-into-string file))
            :do (pm:query query))
         (pm:query (a:read-file-into-string file)))))
