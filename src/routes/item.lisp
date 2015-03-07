@@ -10,3 +10,6 @@
 
 ;;;; Gets all the items and their status in a list
 (pm:defprepared list-items "select list_items($1)" :rows)
+
+;;;; Sets the status in a list item
+(pm:defprepared set-list-item-status "select set_list_item_status($1, $2, $3)" :none)
