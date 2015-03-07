@@ -1,3 +1,5 @@
+-- Gets the schema version
+
 CREATE OR REPLACE FUNCTION schema_version() RETURNS INT AS $$
 DECLARE
         ret INTEGER;

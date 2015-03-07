@@ -18,10 +18,19 @@ CREATE TABLE list (
        user_id INTEGER REFERENCES users(id)
 );
 
+INSERT INTO list (user_id) VALUES (1);
+
 CREATE TABLE item (
        id SERIAL PRIMARY KEY,
-       list_id INTEGER REFERENCES list(id),
        name VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE UNIQUE INDEX item_lower_name_index ON item(LOWER(name));
+
+CREATE TABLE list_items (
+       list_id INTEGER REFERENCES list(id) NOT NULL,
+       item_id INTEGER REFERENCES item(id) NOT NULL,
+       status INTEGER NOT NULL
+);
+
+CREATE UNIQUE INDEX list_items_pair_index ON list_items(list_id, item_id);
