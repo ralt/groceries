@@ -1,6 +1,6 @@
 -- Adds an item
 
-CREATE OR REPLACE FUNCTION add_item(item_name VARCHAR(255), p_list_id INTEGER) RETURNS INTEGER AS $$
+CREATE OR REPLACE FUNCTION add_item(item_name VARCHAR(255), p_list_id INTEGER) RETURNS VOID AS $$
 DECLARE
         v_item_id INTEGER;
 BEGIN
@@ -15,7 +15,5 @@ BEGIN
 
         INSERT INTO list_items (list_id, item_id, status)
         VALUES (p_list_id, v_item_id, 1);
-
-        RETURN v_item_id;
 END; $$
 LANGUAGE PLPGSQL;
