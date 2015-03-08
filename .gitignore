@@ -2,4 +2,6 @@
 *.fasl
 *.lisp-temp
 
-Vagrantfile
+node_modules/
+static/bundle.js
+npm-debug.log
