@@ -10,6 +10,7 @@
       (:link :href "/style.css" :rel "stylesheet"))
      (:body
       (:h1 "Grocery list")
+      (:button :id "clear" "Clear list")
       (:div
        (:form :id "add"
         (:input :type "text" :name "items" :list "items")

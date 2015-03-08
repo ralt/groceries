@@ -1,3 +1,6 @@
+let $ = x => document.querySelector(x);
+let clearEl = $('#clear');
+
 export default class Clear {
 
     constructor(list) {
