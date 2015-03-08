@@ -27,7 +27,8 @@
 
 (defun get-list-items ()
   (with-db
-    (jsown:to-json (str-alists-to-jsown-json (list-items 1)))))
+    (mapcar #'string-downcase
+            (jsown:to-json (str-alists-to-jsown-json (list-items 1))))))
 
 (defun post-set-list-item-status ()
   (let ((name (h:post-parameter "name"))

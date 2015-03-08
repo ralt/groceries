@@ -15,4 +15,6 @@
         (:input :type "text" :name "items" :list "items")
         (:datalist :id "items")
         (:input :type "submit" :value "add")))
+      (:div :id "list")
+      (:div :id "bought")
       (:script :src "/bundle.js")))))

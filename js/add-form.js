@@ -35,7 +35,7 @@ export default class AddForm {
             request
                 .post('/item/add')
                 .send({ name: name });
-            self.list.addItem(new ListItem(name));
+            self.list.addItem(new ListItem({name: name, status: 1}));
         });
     }
 
