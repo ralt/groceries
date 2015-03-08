@@ -48,7 +48,3 @@ CREATE TABLE list_items (
        item_id INTEGER REFERENCES item(id) NOT NULL,
        status INTEGER NOT NULL
 );
-
------
-
-CREATE UNIQUE INDEX list_items_pair_index ON list_items(list_id, item_id);

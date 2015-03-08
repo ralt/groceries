@@ -1,31 +1,14 @@
-import request from "superagent-bluebird-promise";
+import AddForm from "./add-form";
+import List from "./list";
+import Clear from "./clear";
 
-let $ = x => document.querySelector(x);
-let $$ = x => document.querySelectorAll(x);
+let list = new List();
+let addForm = new AddForm(list);
+let clear = new Clear(list);
 
-let itemsList = $('#items');
-let itemInput = itemsList.elements.items;
+addForm.fetchItems().then(addForm.addAutocompleteItems.bind(addForm));
+addForm.setupListeners();
 
-getItems().then(autocomplete);
+list.fetchItems().then(list.addItems.bind(list));
 
-$('#add').addEventListener('submit', e => {
-    e.preventDefault();
-    request
-        .post('/item/add')
-        .send({ name: itemInput.value });
-});
-
-function getItems() {
-    return request
-        .get('/item')
-        .promise()
-        .get('body');
-}
-
-function autocomplete(items) {
-    items.forEach(x => {
-        let el = document.createElement('option');
-        el.value = x;
-        itemsList.appendChild(el);
-    });
-}
+clear.setupListeners();
