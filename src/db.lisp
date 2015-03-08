@@ -62,3 +62,8 @@ SELECT EXISTS(
            :for query in (cl-ppcre:split "-----" (a:read-file-into-string file))
            :do (pm:query query))
         (pm:query (a:read-file-into-string file)))))
+
+(defun str-alists-to-jsown-json (str-alists)
+  (mapcar #'(lambda (item)
+              `(:obj ,@item))
+          str-alists))

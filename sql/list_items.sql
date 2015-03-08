@@ -1,7 +1,7 @@
 -- Gets all the items of a list
 
-CREATE OR REPLACE FUNCTION list_items(p_list_id INTEGER) RETURNS setof RECORD AS $$
-        SELECT i.name, l.status
+CREATE OR REPLACE FUNCTION list_items(IN p_list_id INTEGER, OUT name VARCHAR(255), OUT status INTEGER) RETURNS setof RECORD AS $$
+        SELECT name, status
         FROM item i
         LEFT JOIN list_items l ON i.id = l.item_id
         WHERE l.list_id = p_list_id
