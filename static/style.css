@@ -6,7 +6,6 @@ body {
 #bought > div,
 #list > div {
     border: 1px solid;
-    width: 100%;
     text-align: center;
     padding: 5px;
     margin: 5px;
@@ -15,4 +14,24 @@ body {
 
 #bought > div {
     text-decoration: line-through;
+}
+
+#add {
+    text-align: center;
+    margin: 10px;
+}
+
+#add > * {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+#clear {
+    display: block;
+    margin: 15px auto;
+}
+
+h1 {
+    text-align: center;
+    font-size: 130%;
 }

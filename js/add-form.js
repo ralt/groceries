@@ -32,6 +32,7 @@ export default class AddForm {
         addEl.addEventListener('submit', e => {
             e.preventDefault();
             let name = itemInputEl.value;
+            itemInputEl.value = '';
             request
                 .post('/item/add')
                 .type('form')

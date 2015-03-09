@@ -13,29 +13,6 @@ add login. Other routes will just return JSON.
 
 Fun thing: every SQL request will be done using stored procedures.
 
+Screenshot:
 
-### Notes
-
-- select items() should be select items(list_id) and *not* return the
-  items already in the list
-
-- clean up the js by splitting up stuff in their own modules
-
-- Finished the event listener to add stuff in a list... but make the
-  list in the html first
-
-- the js main file should basically be something like this:
-
-```javascript
-import addForm from "./add-form";
-import listItem from "./list-item";
-import list from "./list";
-import clear from "./clear";
-
-addForm.fetchItems().then(addForm.addAutocompleteItems);
-addForm.setupListeners(listItem);
-
-clear.setupListeners(list.revoke);
-
-list.fetchItems().then(list.addItems(listItem));
-```
+![screenshot](http://i.imgur.com/W4ZrKNL.png)
