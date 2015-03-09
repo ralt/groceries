@@ -7,6 +7,10 @@ let boughtEl = $('#bought');
 
 export default class List {
 
+    constructor() {
+        this.items = [];
+    }
+
     fetchItems() {
         return request
             .get('/item/list')
@@ -19,6 +23,7 @@ export default class List {
     }
 
     addItem(item) {
+        this.items.push(item);
         switch (item.getStatus()) {
         case 1:
             listEl.appendChild(item.getElement());
@@ -31,6 +36,10 @@ export default class List {
     }
 
     clear() {
+        this.items.forEach(item => item.getElement().remove());
+        request
+            .post('/list/clear')
+            .end();
     }
 
 };

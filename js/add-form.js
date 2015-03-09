@@ -36,8 +36,14 @@ export default class AddForm {
                 .post('/item/add')
                 .type('form')
                 .send({ name: name })
-                .end();
-            self.list.addItem(new ListItem({name: name, status: 1}));
+                .promise()
+                .then(function(id) {
+                    self.list.addItem(new ListItem({
+                        id: id,
+                        name: name,
+                        status: 1
+                    }));
+                });
         });
     }
 

@@ -10,5 +10,6 @@
                          (:file "db")
                          (:file "render")
                          (:file "routes/home")
+                         (:file "routes/list")
                          (:file "routes/item")
                          (:file "groceries")))))

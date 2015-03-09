@@ -9,9 +9,10 @@
  (list
   (h:create-regex-dispatcher "^/$" #'home)
   (h:create-regex-dispatcher "^/item$" (render-json #'get-item))
-  (h:create-regex-dispatcher "^/item/add$" #'post-item-add)
+  (h:create-regex-dispatcher "^/item/add$" (render-json #'post-item-add))
   (h:create-regex-dispatcher "^/item/list$" (render-json #'get-list-items))
-  (h:create-regex-dispatcher "^/item/status$" #'post-set-list-item-status)))
+  (h:create-regex-dispatcher "^/item/status$" #'post-set-list-item-status)
+  (h:create-regex-dispatcher "^/list/clear$" #'post-list-clear)))
 
 ;;;; h basic handling
 (defvar *server* nil)

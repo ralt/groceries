@@ -44,6 +44,7 @@ CREATE UNIQUE INDEX item_lower_name_index ON item(LOWER(name));
 -----
 
 CREATE TABLE list_items (
+       id SERIAL PRIMARY KEY,
        list_id INTEGER REFERENCES list(id) NOT NULL,
        item_id INTEGER REFERENCES item(id) NOT NULL,
        status INTEGER NOT NULL

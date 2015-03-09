@@ -10,6 +10,8 @@ export default class Clear {
     setupListeners() {
         let self = this;
         clearEl.addEventListener('click', () => {
+            let really = confirm('Really clear list?');
+            if (!really) return;
             self.list.clear();
         });
     }

@@ -6,6 +6,8 @@ let boughtEl = $('#bought');
 export default class ListItem {
 
     constructor(item) {
+        this.id = item.id;
+        this.name = item.name;
         this.status = item.status;
         this.el = document.createElement('div');
         this.el.textContent = item.name;
@@ -23,11 +25,12 @@ export default class ListItem {
     }
 
     setBought() {
+        this.status = 2;
         boughtEl.appendChild(this.el);
         request
             .post('/item/status')
             .type('form')
-            .send({ name: this.el.textContent, status: 2 })
+            .send({ id: this.id, status: 2 })
             .end();
     }
 
@@ -38,7 +41,7 @@ export default class ListItem {
         request
             .post('/item/status')
             .type('form')
-            .send({ name: this.el.textContent, status: 3 })
+            .send({ id: this.id, status: 3 })
             .end();
     }
 

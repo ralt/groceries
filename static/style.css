@@ -2,3 +2,17 @@ body {
     margin: 0;
     padding: 0;
 }
+
+#bought > div,
+#list > div {
+    border: 1px solid;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#bought > div {
+    text-decoration: line-through;
+}
