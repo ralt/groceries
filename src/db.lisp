@@ -7,6 +7,33 @@
 (defvar *db-host* nil)
 (defvar *db-port* nil)
 
+;;;; Read the SQL contents to load them in the image
+(defvar *db-folder*
+  (merge-pathnames "sql/" (asdf:system-source-directory :groceries)))
+(defvar *db-schema*
+  (a:read-file-into-string (merge-pathnames "schema.sql" *db-folder*)))
+(defvar *db-upgrades* (make-hash-table :test 'eq))
+(loop
+   :for i in '()
+   :do (setf (gethash i *db-upgrades*)
+             (a:read-file-into-string
+              (merge-pathnames
+               (concatenate 'string
+                            (write-to-string i)
+                            ".sql")
+               (merge-pathnames "sql/upgrades/"
+                                (asdf:system-source-directory :groceries))))))
+(defvar *db-functions*
+  (mapcar #'(lambda (name)
+              (a:read-file-into-string
+               (merge-pathnames
+                (concatenate 'string name ".sql")
+                *db-folder*)))
+          '("schema_version"
+            "items"
+            "add_item"
+            "list_items")))
+
 (defmacro with-db (&body body)
   "postmodern:with-connection with db credentials."
   `(pm:with-connection (list *db-name* *db-user* *db-pass*
@@ -32,40 +59,22 @@ SELECT EXISTS(
      :for i from (1+ source) upto dest
      :do (progn
            (format t "Running upgrade ~D...~%" i)
-           (with-db
-             (db-run (merge-pathnames
-                      (concatenate 'string (write-to-string i) ".sql")
-                      (or
-                       (uiop:getenv "SQL_UPGRADES_FOLDER")
-                       (merge-pathnames "sql/upgrades/"
-                                        (asdf:system-source-directory :groceries))))
-                     :multiqueries t)))))
+           (db-run (gethash i *db-upgrades*)
+                   :multiqueries t))))
 
 (defun db-initialize ()
   ;; schema is the only multi-queries file
-  (let ((sql-folder
-         (or (uiop:getenv "SQL_FOLDER")
-             (merge-pathnames "sql/" (asdf:system-source-directory :groceries)))))
-    (db-run (merge-pathnames "schema.sql" sql-folder)
-            :multiqueries t)
-    (dolist (file (mapcar
-                   #'(lambda (name)
-                       (merge-pathnames
-                        (concatenate 'string name ".sql")
-                        sql-folder))
-                   '("schema_version"
-                     "items"
-                     "add_item"
-                     "list_items")))
-      (db-run file))))
+  (db-run *db-schema* :multiqueries t)
+  (dolist (func *db-functions*)
+    (db-run func)))
 
-(defun db-run (file &key (multiqueries nil))
+(defun db-run (content &key (multiqueries nil))
   (with-db
     (if multiqueries
         (loop
-           :for query in (cl-ppcre:split "-----" (a:read-file-into-string file))
+           :for query in (cl-ppcre:split "-----" content)
            :do (pm:query query))
-        (pm:query (a:read-file-into-string file)))))
+        (pm:query content))))
 
 (defun str-alists-to-jsown-json (str-alists)
   (mapcar #'(lambda (item)

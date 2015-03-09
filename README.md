@@ -28,9 +28,3 @@ Screenshot:
 - `DBPORT`: database port (defaults to 5432)
 - `DOCUMENTROOT`: public folder where css/js files reside. Defaults to
   `(merge-pathnames #p"static/" (asdf:system-source-directory :groceries))`.
-- `SQL_UPGRADES_FOLDER`: folder where the sql upgrade files
-  reside. Defaults to `(merge-pathnames "sql/upgrades/"
-  (asdf:system-source-directory :groceries))`.
-- `SQL_FOLDER`: folder where the sql schema and function files
-  reside. Defaults to `(merge-pathnames "sql/"
-  (asdf:system-source-directory :groceries))`
