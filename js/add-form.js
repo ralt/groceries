@@ -34,7 +34,9 @@ export default class AddForm {
             let name = itemInputEl.value;
             request
                 .post('/item/add')
-                .send({ name: name });
+                .type('form')
+                .send({ name: name })
+                .end();
             self.list.addItem(new ListItem({name: name, status: 1}));
         });
     }

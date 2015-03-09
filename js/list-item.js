@@ -7,36 +7,43 @@ export default class ListItem {
 
     constructor(item) {
         this.status = item.status;
-        let el = document.createElement('div');
-        el.textContent = item.name;
-        el.addEventListener('click', self.changeStatus.bind(self));
+        this.el = document.createElement('div');
+        this.el.textContent = item.name;
+        this.el.addEventListener('click', this.changeStatus.bind(this));
     }
 
     changeStatus(e) {
-        let target = e.currentTarget;
         switch (this.status) {
         case 1:
-            this.setBought(target);
+            this.setBought();
             break;
         case 2:
-            this.setDeleted(target);
+            this.setDeleted();
         }
     }
 
-    setBought(itemEl) {
-        boughtEl.appendChild(itemEl);
+    setBought() {
+        boughtEl.appendChild(this.el);
         request
             .post('/item/status')
-            .send({ name: itemEl.textContent, status: 2 });
+            .type('form')
+            .send({ name: this.el.textContent, status: 2 })
+            .end();
     }
 
-    setDeleted(itemEl) {
-        let delete = prompt('Really delete?');
-        if (!delete) return;
-        itemEl.remove();
+    setDeleted() {
+        let reallyDelete = confirm('Really delete?');
+        if (!reallyDelete) return;
+        this.el.remove();
         request
             .post('/item/status')
-            .send({ name: itemEl.textContent, status: 3 });
+            .type('form')
+            .send({ name: this.el.textContent, status: 3 })
+            .end();
+    }
+
+    getElement() {
+        return this.el;
     }
 
     getStatus() {
