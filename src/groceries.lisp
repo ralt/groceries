@@ -1,7 +1,7 @@
 (in-package #:groceries)
 
 
-(defvar *debug* t)
+(defvar *debug* nil)
 
 ;;;; List of routes
 (setf
@@ -14,7 +14,7 @@
   (h:create-regex-dispatcher "^/item/status$" #'post-set-list-item-status)
   (h:create-regex-dispatcher "^/list/clear$" #'post-list-clear)))
 
-;;;; h basic handling
+;;;; hunchentoot basic handling
 (defvar *server* nil)
 
 (defun start (&optional (port 4242) (address "localhost"))
@@ -22,9 +22,11 @@
         (h:start
          (make-instance
           'h:easy-acceptor :port port :address address
-          :document-root (merge-pathnames
-                          #p"static/"
-                          (asdf:system-source-directory :groceries))))))
+          :document-root (or
+                          (uiop:getenv "DOCUMENT_ROOT")
+                          (merge-pathnames
+                           #p"static/"
+                           (asdf:system-source-directory :groceries)))))))
 
 (defun stop (&optional (soft t))
   (h:stop *server* :soft soft))
@@ -35,7 +37,12 @@
 ;;;; db version
 (defvar *version* 1)
 
-(block db-init
+(defun db-init ()
+  (setf *db-name* (uiop:getenv "DBNAME"))
+  (setf *db-user* (uiop:getenv "DBUSER"))
+  (setf *db-pass* (uiop:getenv "DBPASS"))
+  (setf *db-host* (uiop:getenv "DBHOST"))
+  (setf *db-port* (or (parse-integer (uiop:getenv "DBPORT")) 5432))
   (let ((db-version (db-version)))
     (when (= db-version 0)
       (return-from db-init (db-initialize)))
@@ -47,3 +54,9 @@
       (format t "Database version more recent than code version. Terminating.~%")
       (unless *debug*
         (uiop:quit -1)))))
+
+(defun main (&rest args)
+  (declare (ignore args))
+  (db-init)
+  (start (parse-integer (uiop:getenv "PORT")) (uiop:getenv "ADDRESS"))
+  (sb-impl::toplevel-repl nil))

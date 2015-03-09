@@ -16,3 +16,21 @@ Fun thing: every SQL request will be done using stored procedures.
 Screenshot:
 
 ![screenshot](http://i.imgur.com/W4ZrKNL.png)
+
+## List of environment variables
+
+- `ADDRESS`: IP address (or hostname) on which the web server listens
+- `PORT`: IP port on which the web server listens
+- `DBNAME`: database name
+- `DBUSER`: database user
+- `DBPASS`: database password
+- `DBHOST`: database host
+- `DBPORT`: database port (defaults to 5432)
+- `DOCUMENTROOT`: public folder where css/js files reside. Defaults to
+  `(merge-pathnames #p"static/" (asdf:system-source-directory :groceries))`.
+- `SQL_UPGRADES_FOLDER`: folder where the sql upgrade files
+  reside. Defaults to `(merge-pathnames "sql/upgrades/"
+  (asdf:system-source-directory :groceries))`.
+- `SQL_FOLDER`: folder where the sql schema and function files
+  reside. Defaults to `(merge-pathnames "sql/"
+  (asdf:system-source-directory :groceries))`

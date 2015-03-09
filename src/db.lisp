@@ -1,11 +1,11 @@
 (in-package #:groceries)
 
 
-(defvar *db-name* (uiop:getenv "DBNAME"))
-(defvar *db-user* (uiop:getenv "DBUSER"))
-(defvar *db-pass* (uiop:getenv "DBPASS"))
-(defvar *db-host* (uiop:getenv "DBHOST"))
-(defvar *db-port* (or (uiop:getenv "DBPORT") 5432))
+(defvar *db-name* nil)
+(defvar *db-user* nil)
+(defvar *db-pass* nil)
+(defvar *db-host* nil)
+(defvar *db-port* nil)
 
 (defmacro with-db (&body body)
   "postmodern:with-connection with db credentials."
@@ -32,28 +32,32 @@ SELECT EXISTS(
      :for i from (1+ source) upto dest
      :do (progn
            (format t "Running upgrade ~D...~%" i)
-           (db-run (merge-pathnames
-                    (concatenate 'string (write-to-string i) ".sql")
-                    (merge-pathnames "sql/upgrades/"
-                                     (asdf:system-source-directory :groceries)))
-                   :multiqueries t))))
+           (with-db
+             (db-run (merge-pathnames
+                      (concatenate 'string (write-to-string i) ".sql")
+                      (or
+                       (uiop:getenv "SQL_UPGRADES_FOLDER")
+                       (merge-pathnames "sql/upgrades/"
+                                        (asdf:system-source-directory :groceries))))
+                     :multiqueries t)))))
 
 (defun db-initialize ()
   ;; schema is the only multi-queries file
-  (db-run (merge-pathnames
-           "schema.sql"
-           (merge-pathnames "sql/" (asdf:system-source-directory :groceries)))
-          :multiqueries t)
-  (dolist (file (mapcar
-                 #'(lambda (name)
-                     (merge-pathnames
-                      (concatenate 'string name ".sql")
-                      (merge-pathnames "sql/" (asdf:system-source-directory :groceries))))
-                 '("schema_version"
-                   "items"
-                   "add_item"
-                   "list_items")))
-    (db-run file)))
+  (let ((sql-folder
+         (or (uiop:getenv "SQL_FOLDER")
+             (merge-pathnames "sql/" (asdf:system-source-directory :groceries)))))
+    (db-run (merge-pathnames "schema.sql" sql-folder)
+            :multiqueries t)
+    (dolist (file (mapcar
+                   #'(lambda (name)
+                       (merge-pathnames
+                        (concatenate 'string name ".sql")
+                        sql-folder))
+                   '("schema_version"
+                     "items"
+                     "add_item"
+                     "list_items")))
+      (db-run file))))
 
 (defun db-run (file &key (multiqueries nil))
   (with-db
