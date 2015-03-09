@@ -17,11 +17,11 @@
 ;;;; h basic handling
 (defvar *server* nil)
 
-(defun start (&optional (port 4242))
+(defun start (&optional (port 4242) (address "localhost"))
   (setf *server*
         (h:start
          (make-instance
-          'h:easy-acceptor :port port
+          'h:easy-acceptor :port port :address address
           :document-root (merge-pathnames
                           #p"static/"
                           (asdf:system-source-directory :groceries))))))
