@@ -5,3 +5,10 @@
 node_modules/
 static/bundle.js
 npm-debug.log
+
+bin/
+deps
+dist/
+install-deps
+quicklisp.lisp
+.quicklocal/
