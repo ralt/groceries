@@ -26,5 +26,5 @@ Screenshot:
 - `DBPASS`: database password
 - `DBHOST`: database host
 - `DBPORT`: database port (defaults to 5432)
-- `DOCUMENTROOT`: public folder where css/js files reside. Defaults to
+- `DOCUMENT_ROOT`: public folder where css/js files reside. Defaults to
   `(merge-pathnames #p"static/" (asdf:system-source-directory :groceries))`.
