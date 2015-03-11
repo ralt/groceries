@@ -32,7 +32,9 @@
           '("schema_version"
             "items"
             "add_item"
-            "list_items")))
+            "list_items"
+            "clear_list"
+            "set_list_item_status")))
 
 (defmacro with-db (&body body)
   "postmodern:with-connection with db credentials."

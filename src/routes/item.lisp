@@ -2,7 +2,7 @@
 
 
 ;;;; Gets the list of all the items
-(pm:defprepared items "select items()" :rows)
+(pm:defprepared items "select items($1)" :rows)
 
 ;;;; Adds an item in a list, returns the item id
 ;;;; $1 is the item name, $2 is the list id
@@ -10,7 +10,7 @@
 
 (defun get-item ()
   (with-db
-    (jsown:to-json (a:flatten (items)))))
+    (jsown:to-json (a:flatten (items 1)))))
 
 (defun post-item-add ()
   (let ((name (h:post-parameter "name")))
